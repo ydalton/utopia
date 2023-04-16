@@ -86,7 +86,7 @@ RED = (255, 0, 0)
 MOVEMENT = 8
 
 running = True
-point = Point(WIDTH/2, HEIGHT/2, 1)
+player = Point(WIDTH/2, HEIGHT/2, 1)
 follower = Point(WIDTH/2, HEIGHT/2, 20)
 textbox = TextBox()
 command_history = []
@@ -114,9 +114,12 @@ while running:
                     lineData = identify(inLine)
                     if lineData[3] == False:
                         for rep in range(abs(int(lineData[2]))):
-                            print(f"Point: {point.x} {point.y}\tFollower: {follower.x} {follower.y}")
-                            if point.y - GRID_SIZE >= 0 and point.y + GRID_SIZE <= HEIGHT and point.x - GRID_SIZE >= 0 and point.x + GRID_SIZE <= WIDTH:
-                                eval(lineData[0] + lineData[1])
+                            print(f"Point: {player.x} {player.y}\tFollower: {follower.x} {follower.y}")
+                            if player.y - GRID_SIZE >= 0 and player.y + GRID_SIZE <= HEIGHT and player.x - GRID_SIZE >= 0 and player.x + GRID_SIZE <= WIDTH:
+                                try:
+                                    eval(lineData[0] + lineData[1])
+                                except:
+                                    print("Does not work!")
                     print(lineData)
 
                     textbox.flush_text()
@@ -136,17 +139,17 @@ while running:
                     print(textbox.text) 
 
     # smooth movement code
-    diff = point.x - follower.x
+    diff = player.x - follower.x
     if diff != 0:
         follower.x += diff/MOVEMENT
     elif diff < 5:
-        follower.x = point.x
+        follower.x = player.x
 
-    diff = point.y - follower.y
+    diff = player.y - follower.y
     if diff != 0:
         follower.y += diff/MOVEMENT
     elif diff < 5:
-        follower.y = point.y
+        follower.y = player.y
 
     # make the screen white
     screen.fill(BLACK)
@@ -156,7 +159,7 @@ while running:
     # draw the follower
     pygame.draw.rect(screen, RED, pygame.Rect(follower.x - middle, follower.y - middle, follower.size, follower.size))
     # draw the point
-    pygame.draw.rect(screen, RED, pygame.Rect(point.x, point.y, point.size, point.size))
+    pygame.draw.rect(screen, RED, pygame.Rect(player.x, player.y, player.size, player.size))
     # draw the terminal
     pygame.draw.rect(screen, BLACK, textbox.rect)
     # render the text
