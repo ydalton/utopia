@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import pygame
+from identify import identify
 from pygame.locals import (
     K_UP,
     K_DOWN,
     K_LEFT,
-    K_RIGHT,
+    K_RIGHT
 )
 
 GRID_SIZE = 100
@@ -28,7 +29,7 @@ class TextBox:
         self.x = WIDTH//2
         self.y = HEIGHT
         self.rect = pygame.Rect(WIDTH//2, 0, self.x, self.y)
-        self.text = "lolzers"
+        self.text = ""
         self.__font = pygame.font.Font(None, 32)
         self.__offset = 5
         self.fontx = self.x + self.__offset
@@ -90,22 +91,34 @@ follower = Point(WIDTH/2, HEIGHT/2, 20)
 textbox = TextBox()
 command_history = []
 command_index = 0
+
 while running:
     # event loop
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
-            running = False;
+            running = False
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             if textbox.rect.collidepoint(event.pos):
                 textbox.active = not textbox.active
             else:
                 textbox.active = False
+
         if event.type == pygame.KEYDOWN:
             if textbox.active:
                 if event.key == pygame.K_BACKSPACE:
                     textbox.del_char()
                 elif event.key == pygame.K_RETURN:
+                    inLine = textbox.text   #point.moveX(-3)
+                    lineData = identify(inLine)
+                    if lineData[3] == False:
+                        for rep in range(abs(int(lineData[2]))):
+                            print(f"Point: {point.x} {point.y}\tFollower: {follower.x} {follower.y}")
+                            if point.y - GRID_SIZE >= 0 and point.y + GRID_SIZE <= HEIGHT and point.x - GRID_SIZE >= 0 and point.x + GRID_SIZE <= WIDTH:
+                                eval(lineData[0] + lineData[1])
+                    print(lineData)
+
                     textbox.flush_text()
                 elif event.key in [K_UP, K_DOWN]:
                     # implements going back in command history
@@ -120,18 +133,7 @@ while running:
                         textbox.text = ""
                 else:
                     textbox.add_char(event.unicode)
-                    print(textbox.text)
-            else:
-                if event.key in [K_UP, K_DOWN, K_LEFT, K_RIGHT]:
-                    print(f"Point: {point.x} {point.y}\tFollower: {follower.x} {follower.y}")
-                    if event.key == K_UP and point.y - GRID_SIZE >= 0:
-                        point.up()
-                    if event.key == K_DOWN and point.y + GRID_SIZE <= HEIGHT:
-                        point.down()
-                    if event.key == K_LEFT and point.x - GRID_SIZE >= 0:
-                        point.left()
-                    if event.key == K_RIGHT and point.x + GRID_SIZE <= WIDTH:
-                        point.right()
+                    print(textbox.text) 
 
     # smooth movement code
     diff = point.x - follower.x
