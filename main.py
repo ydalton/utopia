@@ -24,6 +24,29 @@ class Point:
         self.y += GRID_SIZE
 
 
+class TextBox:
+    def __init__(self):
+        self.x = WIDTH//2
+        self.y = HEIGHT
+        self.rect = pygame.Rect(WIDTH//2, 0, self.x, self.y)
+        self.text = "lolzers"
+        self.__font = pygame.font.Font(None, 16)
+        self.__offset = 5
+        self.fontx = self.x + self.__offset
+        self.fonty = self.__offset
+        self.text_surface = self.__font.render(self.text, True, WHITE)
+        self.active = False
+    def add_char(self, _char):
+        if _char == '\n':
+            self.text += '\n'
+        else:
+            self.text += _char
+    def del_char(self):
+        if len(self.text) > 0:
+            self.text = self.text[:-1]
+    def refresh_text(self):
+        self.text_surface = self.__font.render(self.text, True, WHITE)
+
 
 # draw grid
 def drawGrid():
@@ -61,13 +84,27 @@ MOVEMENT = 8
 running = True
 point = Point(WIDTH/2, HEIGHT/2, 1)
 follower = Point(WIDTH/2, HEIGHT/2, 20)
+textbox = TextBox()
 while running:
     # event loop
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
             running = False;
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if textbox.rect.collidepoint(event.pos):
+                textbox.active = not textbox.active
+            else:
+                textbox.active = False
         if event.type == pygame.KEYDOWN:
+            if textbox.active:
+                if event.key == pygame.K_BACKSPACE:
+                    textbox.del_char()
+                elif event.key == pygame.K_RETURN:
+                    textbox.add_char('\n')
+                else:
+                    textbox.add_char(event.unicode)
+                    print(textbox.text)
             if event.key in [K_UP, K_DOWN, K_LEFT, K_RIGHT]:
                 print(f"Point: {point.x} {point.y}\tFollower: {follower.x} {follower.y}")
                 if event.key == K_UP and point.y - GRID_SIZE >= 0:
@@ -97,10 +134,16 @@ while running:
     # draw the rectangles
     drawGrid()
     middle = follower.size/2
+    # draw the follower
     pygame.draw.rect(screen, RED, pygame.Rect(follower.x - middle, follower.y - middle, follower.size, follower.size))
+    # draw the point
     pygame.draw.rect(screen, RED, pygame.Rect(point.x, point.y, point.size, point.size))
+    # draw the terminal
+    pygame.draw.rect(screen, BLACK, textbox.rect)
+    # render the text
+    textbox.refresh_text()
+    screen.blit(textbox.text_surface, (textbox.fontx, textbox.fonty))
     # display contents
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
-10
