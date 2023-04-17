@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import pygame
 from identify import identify
+from constants import *
 from pygame.locals import (
     K_UP,
     K_DOWN
 )
 
-GRID_SIZE = 100
 # to represent an object's
 class Point:
     def __init__(self, x, y, size):
@@ -83,33 +83,11 @@ def drawGrid():
             tile = pygame.transform.scale(tile,(GRID_SIZE, GRID_SIZE))
             screen.blit(tile, (x*GRID_SIZE, y*GRID_SIZE))
 
-#grid creation (not auto generated)
-grid = [
-    ["tl","t","t","t","tr"],
-    ["l","c","c","c","r"],
-    ["l","c","cupboard","c","r"],
-    ["l","c","c","c","r"],
-    ["dl","d","d","d","dr"]
-]
-
-GRID_WIDTH = len(grid[0]) * GRID_SIZE
-GRID_HEIGHT = len(grid) * GRID_SIZE
-
-# window width and height
-WIDTH = (len(grid[0]) * 2) * GRID_SIZE
-HEIGHT = (len(grid)) * GRID_SIZE
 
 pygame.init()
-pygame.display.set_caption("Utopia")
+pygame.display.set_caption(GAME_NAME)
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 clock = pygame.time.Clock()
-
-# colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-
-MOVEMENT = 8
 
 running = True
 player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1)
