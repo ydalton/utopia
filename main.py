@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import pygame
 from identify import identify
+from constants import *
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -8,7 +9,6 @@ from pygame.locals import (
     K_RIGHT
 )
 
-GRID_SIZE = 100
 # to represent an object's
 class Point:
     def __init__(self, x, y, size):
@@ -69,21 +69,11 @@ def sign(number):
     else:
         return -1
 
-# window width and height
-WIDTH = 800
-HEIGHT = 600
-
 pygame.init()
-pygame.display.set_caption("Utopia")
+pygame.display.set_caption(GAME_NAME)
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 clock = pygame.time.Clock()
-
 # colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-
-MOVEMENT = 8
 
 running = True
 player = Point(WIDTH/2, HEIGHT/2, 1)
