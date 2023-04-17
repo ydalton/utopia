@@ -126,11 +126,11 @@ while running:
 
                             if lineData[1] == ".left()" and player.x - GRID_SIZE >= 0:
                                 eval(lineData[0] + lineData[1])
-                            elif lineData[1] == ".right()" and player.x + GRID_SIZE <= GRID_WIDTH:
+                            elif lineData[1] == ".right()" and player.x + 2*GRID_SIZE <= GRID_WIDTH:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".up()" and player.y - GRID_SIZE >= 0:
                                 eval(lineData[0] + lineData[1])
-                            elif lineData[1] == ".down()" and player.y + GRID_SIZE <= GRID_HEIGHT:
+                            elif lineData[1] == ".down()" and player.y + 2*GRID_SIZE <= GRID_HEIGHT:
                                 eval(lineData[0] + lineData[1])
                                 
                     print(lineData)
