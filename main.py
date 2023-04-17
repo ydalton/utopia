@@ -54,31 +54,31 @@ def drawGrid():
     for y,x_axis in enumerate(grid):
         for x,base in enumerate(x_axis):
             if base == "c":
-                tile = pygame.image.load("tiles\\center_tile.png")
+                tile = pygame.image.load("./tiles/center_tile.png")
 
             elif base == "l":
-                tile = pygame.image.load("tiles\\l_tile.png")
+                tile = pygame.image.load("./tiles/l_tile.png")
             elif base == "r":
-                tile = pygame.image.load("tiles\\r_tile.png")
+                tile = pygame.image.load("./tiles/r_tile.png")
             elif base == "t":
-                tile = pygame.image.load("tiles\\t_tile.png")
+                tile = pygame.image.load("./tiles/t_tile.png")
             elif base == "d":
-                tile = pygame.image.load("tiles\\d_tile.png")
+                tile = pygame.image.load("./tiles/d_tile.png")
 
             elif base == "tl":
-                tile = pygame.image.load("tiles\\tl_tile.png")
+                tile = pygame.image.load("./tiles/tl_tile.png")
             elif base == "tr":
-                tile = pygame.image.load("tiles\\tr_tile.png")
+                tile = pygame.image.load("./tiles/tr_tile.png")
             elif base == "dl":
-                tile = pygame.image.load("tiles\\dl_tile.png")
+                tile = pygame.image.load("./tiles/dl_tile.png")
             elif base == "dr":
-                tile = pygame.image.load("tiles\\dr_tile.png")
+                tile = pygame.image.load("./tiles/dr_tile.png")
 
             elif base == "_cupboard":
-                tile = pygame.image.load("tiles\\cupboard_tile.png")
+                tile = pygame.image.load("./tiles/cupboard_tile.png")
 
             else:    
-                tile = pygame.image.load("tiles\\base_tile.png")
+                tile = pygame.image.load("./tiles/base_tile.png")
                 
             tile = pygame.transform.scale(tile,(GRID_SIZE, GRID_SIZE))
             screen.blit(tile, (x*GRID_SIZE, y*GRID_SIZE))
@@ -114,7 +114,7 @@ MOVEMENT = 8
 running = True
 player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1)
 follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20)
-player_image = pygame.image.load("tiles\\base_tile.png")     
+player_image = pygame.image.load("./tiles/base_tile.png")
 player_image = pygame.transform.scale(player_image,(GRID_SIZE, GRID_SIZE))
 
 textbox = TextBox()
