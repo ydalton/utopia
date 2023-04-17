@@ -18,6 +18,8 @@ def identify(_inputLine):
     #object error check
     if _object == "":
         _error = True
+    if _object not in ["player"]:
+        _error = True
 
     try:
         _inputCommand = _inputLine[len(_object)+1:_inputLine.index("(")]    #+1 because we do not want the .
