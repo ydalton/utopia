@@ -3,9 +3,7 @@ import pygame
 from identify import identify
 from pygame.locals import (
     K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT
+    K_DOWN
 )
 
 GRID_SIZE = 100
@@ -51,27 +49,55 @@ class TextBox:
         self.text = ""
         command_index = 0
 
-
 # draw grid
 def drawGrid():
-    for y in range(0, HEIGHT, GRID_SIZE):
-        for x in range(0, WIDTH, GRID_SIZE):
-            rect = pygame.Rect(x+1, y+1, GRID_SIZE - 1, GRID_SIZE - 1)
-            pygame.draw.rect(screen, WHITE, rect, 0)
+    for y,x_axis in enumerate(grid):
+        for x,base in enumerate(x_axis):
+            if base == "c":
+                tile = pygame.image.load("tiles\\center_tile.png")
 
+            elif base == "l":
+                tile = pygame.image.load("tiles\\l_tile.png")
+            elif base == "r":
+                tile = pygame.image.load("tiles\\r_tile.png")
+            elif base == "t":
+                tile = pygame.image.load("tiles\\t_tile.png")
+            elif base == "d":
+                tile = pygame.image.load("tiles\\d_tile.png")
 
-# return the sign of a number
-def sign(number):
-    if number > 1:
-        return 1
-    elif number == 0:
-        return 0
-    else:
-        return -1
+            elif base == "tl":
+                tile = pygame.image.load("tiles\\tl_tile.png")
+            elif base == "tr":
+                tile = pygame.image.load("tiles\\tr_tile.png")
+            elif base == "dl":
+                tile = pygame.image.load("tiles\\dl_tile.png")
+            elif base == "dr":
+                tile = pygame.image.load("tiles\\dr_tile.png")
+
+            elif base == "_cupboard":
+                tile = pygame.image.load("tiles\\cupboard_tile.png")
+
+            else:    
+                tile = pygame.image.load("tiles\\base_tile.png")
+                
+            tile = pygame.transform.scale(tile,(GRID_SIZE, GRID_SIZE))
+            screen.blit(tile, (x*GRID_SIZE, y*GRID_SIZE))
+
+#grid creation (not auto generated)
+grid = [
+    ["tl","t","t","t","tr"],
+    ["l","c","c","c","r"],
+    ["l","c","cupboard","c","r"],
+    ["l","c","c","c","r"],
+    ["dl","d","d","d","dr"]
+]
+
+GRID_WIDTH = len(grid[0]) * GRID_SIZE
+GRID_HEIGHT = len(grid) * GRID_SIZE
 
 # window width and height
-WIDTH = 800
-HEIGHT = 600
+WIDTH = (len(grid[0]) * 2) * GRID_SIZE
+HEIGHT = (len(grid)) * GRID_SIZE
 
 pygame.init()
 pygame.display.set_caption("Utopia")
@@ -86,8 +112,11 @@ RED = (255, 0, 0)
 MOVEMENT = 8
 
 running = True
-player = Point(WIDTH/2, HEIGHT/2, 1)
-follower = Point(WIDTH/2, HEIGHT/2, 20)
+player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1)
+follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20)
+player_image = pygame.image.load("tiles\\base_tile.png")     
+player_image = pygame.transform.scale(player_image,(GRID_SIZE, GRID_SIZE))
+
 textbox = TextBox()
 command_history = []
 command_index = 0
@@ -115,14 +144,19 @@ while running:
                     if lineData[3] == False:
                         for rep in range(abs(int(lineData[2]))):
                             print(f"Point: {player.x} {player.y}\tFollower: {follower.x} {follower.y}")
-                            if player.y - GRID_SIZE >= 0 and player.y + GRID_SIZE <= HEIGHT and player.x - GRID_SIZE >= 0 and player.x + GRID_SIZE <= WIDTH:
-                                try:
-                                    eval(lineData[0] + lineData[1])
-                                except:
-                                    print("Does not work!")
-                    print(lineData)
 
+                            if lineData[1] == ".left()" and player.x - GRID_SIZE >= 0:
+                                eval(lineData[0] + lineData[1])
+                            elif lineData[1] == ".right()" and player.x + GRID_SIZE <= GRID_WIDTH:
+                                eval(lineData[0] + lineData[1])
+                            elif lineData[1] == ".up()" and player.y - GRID_SIZE >= 0:
+                                eval(lineData[0] + lineData[1])
+                            elif lineData[1] == ".down()" and player.y + GRID_SIZE <= GRID_HEIGHT:
+                                eval(lineData[0] + lineData[1])
+                                
+                    print(lineData)
                     textbox.flush_text()
+
                 elif event.key in [K_UP, K_DOWN]:
                     # implements going back in command history
                     if event.key == K_UP and command_index + 1 < len(command_history)-1:
@@ -153,18 +187,21 @@ while running:
 
     # make the screen white
     screen.fill(BLACK)
+
     # draw the rectangles
     drawGrid()
     middle = follower.size/2
-    # draw the follower
-    pygame.draw.rect(screen, RED, pygame.Rect(follower.x - middle, follower.y - middle, follower.size, follower.size))
-    # draw the point
-    pygame.draw.rect(screen, RED, pygame.Rect(player.x, player.y, player.size, player.size))
+
+    # draw the follower (player)
+    screen.blit(player_image, (follower.x - middle, follower.y - middle))
+    
     # draw the terminal
     pygame.draw.rect(screen, BLACK, textbox.rect)
+
     # render the text
     textbox.refresh_text()
     screen.blit(textbox.text_surface, (textbox.fontx, textbox.fonty))
+
     # display contents
     pygame.display.flip()
     clock.tick(60)
