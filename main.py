@@ -90,6 +90,7 @@ screen = pygame.display.set_mode([WIDTH, HEIGHT])
 clock = pygame.time.Clock()
 
 running = True
+# this is fine
 player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1)
 follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20)
 player_image = pygame.image.load("./tiles/base_tile.png")
@@ -168,10 +169,9 @@ while running:
 
     # draw the rectangles
     drawGrid()
-    middle = follower.size/2
 
     # draw the follower (player)
-    screen.blit(player_image, (follower.x - middle, follower.y - middle))
+    screen.blit(player_image, (follower.x, follower.y))
     
     # draw the terminal
     pygame.draw.rect(screen, BLACK, textbox.rect)
