@@ -2,52 +2,11 @@
 import pygame
 from identify import identify
 from constants import *
+from objects import *
 from pygame.locals import (
     K_UP,
     K_DOWN
 )
-
-# to represent an object's
-class Point:
-    def __init__(self, x, y, size):
-        self.x = x
-        self.y = y
-        self.size = size
-    def left(self):
-        self.x -= GRID_SIZE
-    def right(self):
-        self.x += GRID_SIZE
-    def up(self):
-        self.y -= GRID_SIZE
-    def down(self):
-        self.y += GRID_SIZE
-
-class TextBox:
-    def __init__(self):
-        self.x = WIDTH//2
-        self.y = HEIGHT
-        self.rect = pygame.Rect(WIDTH//2, 0, self.x, self.y)
-        self.text = ""
-        self.__font = pygame.font.Font(None, 32)
-        self.__offset = 5
-        self.fontx = self.x + self.__offset
-        self.fonty = self.__offset
-        self.text_surface = self.__font.render(self.text, True, WHITE)
-        self.active = False
-    def add_char(self, _char):
-        if _char == '\n':
-            self.text += '\n'
-        else:
-            self.text += _char
-    def del_char(self):
-        if len(self.text) > 0:
-            self.text = self.text[:-1]
-    def refresh_text(self):
-        self.text_surface = self.__font.render(">>> " + self.text, True, WHITE)
-    def flush_text(self):
-        command_history.append(self.text)
-        self.text = ""
-        command_index = 0
 
 # draw grid
 def drawGrid():
@@ -74,9 +33,6 @@ def drawGrid():
             elif base == "dr":
                 tile = pygame.image.load("./tiles/dr_tile.png")
 
-            elif base == "_cupboard":
-                tile = pygame.image.load("./tiles/cupboard_tile.png")
-
             else:    
                 tile = pygame.image.load("./tiles/base_tile.png")
                 
@@ -90,15 +46,14 @@ screen = pygame.display.set_mode([WIDTH, HEIGHT])
 clock = pygame.time.Clock()
 
 running = True
-# this is fine
-player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1)
-follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20)
-player_image = pygame.image.load("./tiles/base_tile.png")
-player_image = pygame.transform.scale(player_image,(GRID_SIZE, GRID_SIZE))
+# defining object
+cupboard = Cupboard((len(grid[0])//2) * GRID_SIZE + GRID_SIZE, (len(grid)//2) * GRID_SIZE, False, pygame.image.load("./tiles/cupboard_tile.png"))
+
+player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1, pygame.image.load("./sprites/player.png"))
+follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20, pygame.image.load("./sprites/player.png"))
 
 textbox = TextBox()
-command_history = []
-command_index = 0
+
 
 while running:
     # event loop
@@ -124,7 +79,9 @@ while running:
                         for rep in range(abs(int(lineData[2]))):
                             print(f"Point: {player.x} {player.y}\tFollower: {follower.x} {follower.y}")
 
-                            if lineData[1] == ".left()" and player.x - GRID_SIZE >= 0:
+                            if lineData[1] not in [".left()",".right()",".up()",".down()"]:
+                                eval(lineData[0] + lineData[1])
+                            elif lineData[1] == ".left()" and player.x - GRID_SIZE >= 0:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".right()" and player.x + 2*GRID_SIZE <= GRID_WIDTH:
                                 eval(lineData[0] + lineData[1])
@@ -143,10 +100,11 @@ while running:
                     if event.key == K_DOWN and command_index - 1 >= -1:
                         command_index -= 1
                     print(command_index)
-                    if command_index > -1:
-                        textbox.text = command_history[len(command_history) - command_index - 1]
-                    else:
-                        textbox.text = ""
+                    if len(command_history) > 0:
+                        if command_index > -1:
+                            textbox.text = command_history[len(command_history) - command_index - 1]
+                        else:
+                            textbox.text = ""
                 else:
                     textbox.add_char(event.unicode)
                     print(textbox.text) 
@@ -170,15 +128,25 @@ while running:
     # draw the rectangles
     drawGrid()
 
+     # draw the cupboard
+    screen.blit(cupboard.image, (cupboard.x, cupboard.y))
+
     # draw the follower (player)
-    screen.blit(player_image, (follower.x, follower.y))
-    
+    screen.blit(player.image, (follower.x, follower.y))
+
     # draw the terminal
     pygame.draw.rect(screen, BLACK, textbox.rect)
 
     # render the text
     textbox.refresh_text()
     screen.blit(textbox.text_surface, (textbox.fontx, textbox.fonty))
+
+    # draw coin counter
+    img = pygame.image.load("./sprites/coin.png")
+    screen.blit(img,(0,0))
+    font = pygame.font.SysFont('Comic Sans MS', 10)
+    text = font.render(" x"+str(coins), False, (0, 0, 0))
+    screen.blit(text,(7,7))
 
     # display contents
     pygame.display.flip()
