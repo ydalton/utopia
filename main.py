@@ -47,14 +47,13 @@ clock = pygame.time.Clock()
 
 running = True
 # defining object
-cupboard = Cupboard((len(grid[0])//2) * GRID_SIZE + GRID_SIZE, (len(grid)//2) * GRID_SIZE, False, pygame.image.load("./tiles/cupboard_tile.png"))
+cupboard = Cupboard((len(grid[0])//2) * GRID_SIZE + GRID_SIZE, (len(grid)//2) * GRID_SIZE, pygame.image.load("./tiles/cupboard_tile.png"))
 
 player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1, pygame.image.load("./sprites/player.png"))
 follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20, pygame.image.load("./sprites/player.png"))
 
 textbox = TextBox()
-
-
+coins = 0
 while running:
     # event loop
     events = pygame.event.get()
@@ -78,9 +77,9 @@ while running:
                     if lineData[3] == False:
                         for rep in range(abs(int(lineData[2]))):
                             print(f"Point: {player.x} {player.y}\tFollower: {follower.x} {follower.y}")
-
                             if lineData[1] not in [".left()",".right()",".up()",".down()"]:
-                                eval(lineData[0] + lineData[1])
+                                coins = eval(lineData[0] + lineData[1])
+                                print(f"Counter is now set to {coins} coins")
                             elif lineData[1] == ".left()" and player.x - GRID_SIZE >= 0:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".right()" and player.x + 2*GRID_SIZE <= GRID_WIDTH:

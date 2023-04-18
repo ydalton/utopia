@@ -2,7 +2,7 @@ def identify(_inputLine):
     _commands = {
         "moveY":(".up()",".down()"),
         "moveX":(".right()",".left()"),
-        "interact":(".interact(player.y, player.x)")
+        "interact":(".interact(player.y, player.x, coins)")
     }
 
     _object = ""

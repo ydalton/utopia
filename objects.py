@@ -17,17 +17,18 @@ class Point:
         self.y += GRID_SIZE
     
 class Cupboard:
-    def __init__(self, x, y, state, image): #state dictates if it is open or closed
+    def __init__(self, x, y, image): #state dictates if it is open or closed
         self.x = x
         self.y = y
         self.image = pygame.transform.scale(image,(GRID_SIZE, GRID_SIZE))
         self.coin = 1
-    def interact(self, player_y, player_x):
+    def interact(self, player_y, player_x, coins):
         if self.y == player_y and self.x == player_x:
             image = pygame.image.load("./tiles/cupboard_open_tile.png")
             self.image = pygame.transform.scale(image,(GRID_SIZE, GRID_SIZE))
             coins += self.coin
-            self.coin -= 1
+            self.coin = 0
+            return coins
 
 class TextBox:
     def __init__(self):
