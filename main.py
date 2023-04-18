@@ -98,15 +98,14 @@ while running:
                         command_index += 1
                     if event.key == K_DOWN and command_index - 1 >= -1:
                         command_index -= 1
-                    print(command_index)
                     if len(command_history) > 0:
+                        # TODO command history is not completely working
                         if command_index > -1:
                             textbox.text = command_history[len(command_history) - command_index - 1]
                         else:
                             textbox.text = ""
                 else:
                     textbox.add_char(event.unicode)
-                    print(textbox.text) 
 
     # smooth movement code
     diff = player.x - follower.x
