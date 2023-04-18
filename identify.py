@@ -1,7 +1,8 @@
 def identify(_inputLine):
     _commands = {
         "moveY":(".up()",".down()"),
-        "moveX":(".right()",".left()")
+        "moveX":(".right()",".left()"),
+        "interact":(".interact(player.y, player.x)")
     }
 
     _object = ""
@@ -16,9 +17,7 @@ def identify(_inputLine):
         _object += letter
 
     #object error check
-    if _object == "":
-        _error = True
-    if _object not in ["player"]:
+    if _object not in ["player", "cupboard"]:
         _error = True
 
     try:
@@ -42,6 +41,9 @@ def identify(_inputLine):
         else:
             _error = True
     except:
+        _error = True
+
+    if _do == ".interact(player.y, player.x)" and _object not in ["cupboard"]:
         _error = True
 
     return (_object, _do, _repeat, _error)
