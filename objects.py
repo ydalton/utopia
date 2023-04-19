@@ -30,6 +30,7 @@ class Cupboard:
             self.coins = 0
             return add_coins
 
+
 class TextBox:
     def __init__(self):
         self.x = WIDTH//2
@@ -55,3 +56,4 @@ class TextBox:
     def flush_text(self):
         command_history.append(self.text)
         self.text = ""
+        command_index = 0

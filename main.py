@@ -53,8 +53,7 @@ player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1, pyg
 follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20, pygame.image.load("./sprites/player.png"))
 
 textbox = TextBox()
-
-
+coins = 0
 while running:
     # event loop
     events = pygame.event.get()
@@ -103,15 +102,14 @@ while running:
                         command_index += 1
                     if event.key == K_DOWN and command_index - 1 >= -1:
                         command_index -= 1
-                    print(command_index)
                     if len(command_history) > 0:
+                        # TODO command history is not completely working
                         if command_index > -1:
                             textbox.text = command_history[len(command_history) - command_index - 1]
                         else:
                             textbox.text = ""
                 else:
                     textbox.add_char(event.unicode)
-                    print(textbox.text) 
 
     # smooth movement code
     diff = player.x - follower.x
