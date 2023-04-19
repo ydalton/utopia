@@ -53,7 +53,7 @@ player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1, pyg
 follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20, pygame.image.load("./sprites/player.png"))
 
 textbox = TextBox()
-coins = 0
+
 while running:
     # event loop
     events = pygame.event.get()
@@ -130,7 +130,7 @@ while running:
     # draw the rectangles
     drawGrid()
 
-     # draw the cupboard
+    # draw the cupboard
     screen.blit(cupboard.image, (cupboard.x, cupboard.y))
 
     # draw the follower (player)
