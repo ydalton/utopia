@@ -47,7 +47,7 @@ clock = pygame.time.Clock()
 
 running = True
 # defining object
-cupboard = Cupboard((len(grid[0])//2) * GRID_SIZE + GRID_SIZE, (len(grid)//2) * GRID_SIZE, False, pygame.image.load("./tiles/cupboard_tile.png"))
+cupboard = Cupboard((6) * GRID_SIZE, (5) * GRID_SIZE, pygame.image.load("./tiles/cupboard_tile.png"))
 
 player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1, pygame.image.load("./sprites/player.png"))
 follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20, pygame.image.load("./sprites/player.png"))
@@ -79,7 +79,7 @@ while running:
                         for rep in range(abs(int(lineData[2]))):
                             print(f"Point: {player.x} {player.y}\tFollower: {follower.x} {follower.y}")
 
-                            if lineData[1] not in [".left()",".right()",".up()",".down()"]:
+                            if lineData[1] not in [".left()",".right()",".up()",".down()",".interact(player.y, player.x)"]:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".left()" and player.x - GRID_SIZE >= 0:
                                 eval(lineData[0] + lineData[1])
@@ -89,6 +89,10 @@ while running:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".down()" and player.y + 2*GRID_SIZE <= GRID_HEIGHT:
                                 eval(lineData[0] + lineData[1])
+                            elif lineData[1] == ".interact(player.y, player.x)":
+                                add = "coins += "
+                                exec(add + lineData[0] + lineData[1])
+                                print(coins)
                                 
                     print(lineData)
                     textbox.flush_text()
