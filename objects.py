@@ -30,6 +30,7 @@ class Cupboard:
             self.coins = 0
             return add_coins
 
+
 class TextBox:
     def __init__(self):
         self.x = WIDTH//2
