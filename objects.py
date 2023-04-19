@@ -55,3 +55,4 @@ class TextBox:
     def flush_text(self):
         command_history.append(self.text)
         self.text = ""
+        command_index = 0
