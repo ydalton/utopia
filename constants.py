@@ -2,6 +2,8 @@ GRID_SIZE = 75
 
 MOVEMENT = 8
 
+coins = 0
+
 #grid creation (not auto generated)
 grid = [
     ["tl","t","t","t","t","t","t","t","t","tr"],
