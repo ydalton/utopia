@@ -7,50 +7,43 @@ from pygame.locals import (
     K_UP,
     K_DOWN
 )
+from pytmx.util_pygame import load_pygame
 
 # draw grid
-def drawGrid():
-    for y,x_axis in enumerate(grid):
-        for x,base in enumerate(x_axis):
-            if base == "c":
-                tile = pygame.image.load("./tiles/center_tile.png")
+#     for y,x_axis in enumerate(grid):
+#         for x,base in enumerate(x_axis):
+#             if base == 1:
+#                 tile = pygame.image.load("./tiles/center_tile.png")
+#             elif base == 0:
+#                 tile = pygame.image.load("./tiles/red_tile.png")
 
-            elif base == "l":
-                tile = pygame.image.load("./tiles/l_tile.png")
-            elif base == "r":
-                tile = pygame.image.load("./tiles/r_tile.png")
-            elif base == "t":
-                tile = pygame.image.load("./tiles/t_tile.png")
-            elif base == "d":
-                tile = pygame.image.load("./tiles/d_tile.png")
-
-            elif base == "tl":
-                tile = pygame.image.load("./tiles/tl_tile.png")
-            elif base == "tr":
-                tile = pygame.image.load("./tiles/tr_tile.png")
-            elif base == "dl":
-                tile = pygame.image.load("./tiles/dl_tile.png")
-            elif base == "dr":
-                tile = pygame.image.load("./tiles/dr_tile.png")
-
-            else:    
-                tile = pygame.image.load("./tiles/base_tile.png")
+#             else:    
+#                 tile = pygame.image.load("./tiles/base_tile.png")
                 
-            tile = pygame.transform.scale(tile,(GRID_SIZE, GRID_SIZE))
-            screen.blit(tile, (x*GRID_SIZE, y*GRID_SIZE))
+#             tile = pygame.transform.scale(tile,(GRID_SIZE, GRID_SIZE))
+#             screen.blit(tile, (x*GRID_SIZE, y*GRID_SIZE))
 
 
 pygame.init()
 pygame.display.set_caption(GAME_NAME)
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 clock = pygame.time.Clock()
+tmx_data = load_pygame('C:/Users/robve/Desktop/Utopia/maze.tmx')
+sprite_group = pygame.sprite.Group()
+
+for layer in tmx_data.layers:
+    if hasattr(layer,'data'):
+        for x,y,surf in layer.tiles():
+            pos =(x * GRID_SIZE,y * GRID_SIZE)
+            Tile(pos = pos, surf = surf, groups = sprite_group)
+    sprite_group.draw(screen)
 
 running = True
 # defining object
-cupboard = Cupboard((6) * GRID_SIZE, (5) * GRID_SIZE, pygame.image.load("./tiles/cupboard_tile.png"))
+cupboard = Cupboard((47) * GRID_SIZE, (3) * GRID_SIZE, pygame.image.load("./tiles/cupboard_tile.png"))
 
-player = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 1, pygame.image.load("./sprites/player.png"))
-follower = Point((len(grid[0])//2) * GRID_SIZE, (len(grid)//2) * GRID_SIZE, 20, pygame.image.load("./sprites/player.png"))
+player = Point((47) * GRID_SIZE, (5) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
+follower = Point((47) * GRID_SIZE, (5) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
 
 textbox = TextBox()
 
@@ -78,15 +71,18 @@ while running:
                         for rep in range(abs(int(lineData[2]))):
                             print(f"Point: {player.x} {player.y}\tFollower: {follower.x} {follower.y}")
 
+                            p_idx_x = int(player.x / GRID_SIZE)
+                            p_idx_y = int(player.y / GRID_SIZE)
+
                             if lineData[1] not in [".left()",".right()",".up()",".down()",".interact(player.y, player.x)"]:
                                 eval(lineData[0] + lineData[1])
-                            elif lineData[1] == ".left()" and player.x - GRID_SIZE >= 0:
+                            elif lineData[1] == ".left()" and grid[p_idx_y][p_idx_x - 1] != 0: 
                                 eval(lineData[0] + lineData[1])
-                            elif lineData[1] == ".right()" and player.x + 2*GRID_SIZE <= GRID_WIDTH:
+                            elif lineData[1] == ".right()" and grid[p_idx_y][p_idx_x + 1] != 0:
                                 eval(lineData[0] + lineData[1])
-                            elif lineData[1] == ".up()" and player.y - GRID_SIZE >= 0:
+                            elif lineData[1] == ".up()" and grid[p_idx_y - 1][p_idx_x] != 0:
                                 eval(lineData[0] + lineData[1])
-                            elif lineData[1] == ".down()" and player.y + 2*GRID_SIZE <= GRID_HEIGHT:
+                            elif lineData[1] == ".down()" and grid[p_idx_y + 1][p_idx_x] != 0:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".interact(player.y, player.x)":
                                 add = "coins += "
@@ -125,10 +121,10 @@ while running:
         follower.y = player.y
 
     # make the screen white
-    screen.fill(BLACK)
+    screen.fill((20,20,18))
 
     # draw the rectangles
-    drawGrid()
+    sprite_group.draw(screen)
 
     # draw the cupboard
     screen.blit(cupboard.image, (cupboard.x, cupboard.y))
@@ -145,10 +141,11 @@ while running:
 
     # draw coin counter
     img = pygame.image.load("./sprites/coin.png")
+    img = pygame.transform.scale(img,(GRID_SIZE*5,GRID_SIZE*5))
     screen.blit(img,(0,0))
-    font = pygame.font.SysFont('Comic Sans MS', 10)
+    font = pygame.font.SysFont('Comic Sans MS', GRID_SIZE*2)
     text = font.render(" x"+str(coins), False, (0, 0, 0))
-    screen.blit(text,(7,7))
+    screen.blit(text,(GRID_SIZE*0.8,GRID_SIZE))
 
     # display contents
     pygame.display.flip()
