@@ -16,6 +16,7 @@ clock = pygame.time.Clock()
 tmx_data = load_pygame('./tiles/maze.tmx')
 sprite_group = pygame.sprite.Group()
 
+# draw each layer in the map
 for layer in tmx_data.layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
@@ -32,6 +33,7 @@ follower = Point((47) * GRID_SIZE, (5) * GRID_SIZE, 20, pygame.image.load("./spr
 
 textbox = TextBox()
 
+# this is the main loop. the game happens in here
 while running:
     # event loop
     events = pygame.event.get()
@@ -39,6 +41,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        # TODO: this might be removed later
         if event.type == pygame.MOUSEBUTTONDOWN:
             if textbox.rect.collidepoint(event.pos):
                 textbox.active = not textbox.active
@@ -123,6 +126,7 @@ while running:
     screen.blit(player.image, (follower.x, follower.y))
 
     # draw the terminal
+    # TODO: perhaps move this into the Textbox class?
     pygame.draw.rect(screen, BLACK, textbox.rect)
 
     # render the text
