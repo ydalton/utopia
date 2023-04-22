@@ -54,9 +54,10 @@ class TextBox:
     def refresh_text(self):
         self.text_surface = self.__font.render(">>> " + self.text, True, WHITE)
     def flush_text(self):
-        command_history.append(self.text)
-        self.text = ""
+        if self.text != command_history[-1]:
+            command_history.append(self.text)
         command_index = 0
+        self.text = ""
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self,pos,surf,groups):

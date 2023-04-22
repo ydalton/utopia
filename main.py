@@ -59,6 +59,8 @@ while running:
                             p_idx_x = int(player.x / GRID_SIZE)
                             p_idx_y = int(player.y / GRID_SIZE)
 
+                            # FIXME: your player might refuse to move if there is a block
+                            # in front of the block that you want to move to.
                             if lineData[1] not in [".left()",".right()",".up()",".down()",".interact(player.y, player.x)"]:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".left()" and grid[p_idx_y][p_idx_x - 1] != 0: 
@@ -76,19 +78,22 @@ while running:
                                 
                     print(lineData)
                     textbox.flush_text()
+                    # because python is autistic for some reason,
+                    # we can't include this line in the flust_text
+                    # function
+                    command_index = 0
 
                 elif event.key in [K_UP, K_DOWN]:
                     # implements going back in command history
-                    if event.key == K_UP and command_index + 1 < len(command_history)-1:
-                        command_index += 1
-                    if event.key == K_DOWN and command_index - 1 >= -1:
+                    if event.key == K_UP and command_index >= -len(command_history) + 1:
                         command_index -= 1
-                    if len(command_history) > 0:
-                        # TODO command history is not completely working
-                        if command_index > -1:
-                            textbox.text = command_history[len(command_history) - command_index - 1]
-                        else:
-                            textbox.text = ""
+                    if event.key == K_DOWN and command_index <= -1:
+                        command_index += 1
+                    print(command_index)
+                    if command_index < 0:
+                        textbox.text = command_history[command_index]
+                    else:
+                        textbox.text = ""
                 else:
                     textbox.add_char(event.unicode)
 
