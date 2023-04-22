@@ -33,9 +33,9 @@ class Cupboard:
 
 class TextBox:
     def __init__(self):
-        self.x = WIDTH//2
+        self.x = WIDTH//1.5
         self.y = HEIGHT
-        self.rect = pygame.Rect(WIDTH//2, 0, self.x, self.y)
+        self.rect = pygame.Rect(WIDTH//1.5, 0, self.x, self.y)
         self.text = ""
         self.__font = pygame.font.Font(None, 32)
         self.__offset = 5
@@ -57,3 +57,9 @@ class TextBox:
         command_history.append(self.text)
         self.text = ""
         command_index = 0
+
+class Tile(pygame.sprite.Sprite):
+    def __init__(self,pos,surf,groups):
+        super().__init__(groups)
+        self.image = pygame.transform.scale(surf,(GRID_SIZE,GRID_SIZE))
+        self.rect = self.image.get_rect(topleft = pos)
