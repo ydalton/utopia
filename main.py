@@ -9,21 +9,6 @@ from pygame.locals import (
 )
 from pytmx.util_pygame import load_pygame
 
-# draw grid
-#     for y,x_axis in enumerate(grid):
-#         for x,base in enumerate(x_axis):
-#             if base == 1:
-#                 tile = pygame.image.load("./tiles/center_tile.png")
-#             elif base == 0:
-#                 tile = pygame.image.load("./tiles/red_tile.png")
-
-#             else:    
-#                 tile = pygame.image.load("./tiles/base_tile.png")
-                
-#             tile = pygame.transform.scale(tile,(GRID_SIZE, GRID_SIZE))
-#             screen.blit(tile, (x*GRID_SIZE, y*GRID_SIZE))
-
-
 pygame.init()
 pygame.display.set_caption(GAME_NAME)
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
