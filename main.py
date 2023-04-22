@@ -28,7 +28,7 @@ pygame.init()
 pygame.display.set_caption(GAME_NAME)
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 clock = pygame.time.Clock()
-tmx_data = load_pygame('C:/Users/robve/Desktop/Utopia/maze.tmx')
+tmx_data = load_pygame('./tiles/maze.tmx')
 sprite_group = pygame.sprite.Group()
 
 for layer in tmx_data.layers:
