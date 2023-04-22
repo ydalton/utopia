@@ -56,7 +56,6 @@ class TextBox:
     def flush_text(self):
         if self.text != command_history[-1]:
             command_history.append(self.text)
-        command_index = 0
         self.text = ""
 
 class Tile(pygame.sprite.Sprite):
