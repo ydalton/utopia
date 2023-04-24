@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import pygame
+from pygame.transform import *
 from identify import identify
 from constants import *
 from objects import *
@@ -123,18 +124,19 @@ while running:
         # TODO: if i can return a surf object better than this
         # please let me know how
         # there is a magic number somewhere, i can feel it
-        x = obj.rect.x - follower.x + 500
-        y = obj.rect.y - follower.y + 500
-        # limit the tiles being drawn
-        if (x > -GRID_SIZE and x < textbox.x) and (y > -GRID_SIZE and y < HEIGHT):
-            obj.surf = pygame.transform.rotate(obj.image, 0)
+        x = zoomify(obj.rect.x - follower.x)
+        y = zoomify(obj.rect.y - follower.y)
+        # check if the blocks are visible
+        if (x > -GRID_SIZE*ZOOM and x < textbox.x) and (y > -GRID_SIZE*ZOOM and y < HEIGHT):
+            obj.surf = scale_by(obj.image, ZOOM)
             screen.blit(obj.surf, (x, y))
 
     # draw the cupboard
-    screen.blit(cupboard.image, (cupboard.x, cupboard.y))
+    screen.blit(scale_by(cupboard.image, ZOOM), (zoomify(cupboard.x - follower.x), zoomify(cupboard.y - follower.y)))
 
     # draw the follower (player)
-    screen.blit(player.image, (WIDTH/3, HEIGHT/2))
+    # position is fixed because
+    screen.blit(scale_by(player.image, ZOOM), (WIDTH/3, HEIGHT/2))
 
     # draw the terminal
     pygame.draw.rect(screen, BLACK, textbox.rect)

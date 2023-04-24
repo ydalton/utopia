@@ -72,3 +72,9 @@ GAME_NAME = "Utopia"
 # text field history
 command_history = [""]
 command_index = 0
+
+ZOOM = 4
+
+# zoom implementation
+def zoomify(_number):
+    return ZOOM*_number+500
