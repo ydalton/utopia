@@ -100,6 +100,11 @@ while running:
                 else:
                     textbox.add_char(event.unicode)
 
+
+    # make the screen white
+    screen.fill((20,20,18))
+
+
     # smooth movement code
     diff = player.x - follower.x
     if diff != 0:
@@ -113,20 +118,24 @@ while running:
     elif diff < 5:
         follower.y = player.y
 
-    # make the screen white
-    screen.fill((20,20,18))
-
-    # draw the rectangles
-    sprite_group.draw(screen)
+    # draw map
+    for obj in sprite_group:
+        # TODO: if i can return a surf object better than this
+        # please let me know how
+        obj.surf = pygame.transform.rotate(obj.image, 0)
+        # there is a magic number somewhere, i can feel it
+        x = obj.rect.x + follower.x - WIDTH + 120
+        y = obj.rect.y + follower.y - 20
+        # print(follower.x - 120, follower.y + 300)
+        screen.blit(obj.surf, (x, y))
 
     # draw the cupboard
     screen.blit(cupboard.image, (cupboard.x, cupboard.y))
 
     # draw the follower (player)
-    screen.blit(player.image, (follower.x, follower.y))
+    screen.blit(player.image, (WIDTH/3, HEIGHT/2))
 
     # draw the terminal
-    # TODO: perhaps move this into the Textbox class?
     pygame.draw.rect(screen, BLACK, textbox.rect)
 
     # render the text
