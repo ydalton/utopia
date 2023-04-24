@@ -34,8 +34,21 @@ follower = Point((47) * GRID_SIZE, (5) * GRID_SIZE, 20, pygame.image.load("./spr
 
 textbox = TextBox()
 
+# this function cannot be moved outside of main.py
+def draw_map():
+    for obj in sprite_group:
+        x = zoomify(obj.rect.x - follower.x)
+        y = zoomify(obj.rect.y - follower.y)
+        # check if the blocks are visible
+        if (x > -GRID_SIZE*ZOOM and x < textbox.x) and (y > -GRID_SIZE*ZOOM and y < HEIGHT):
+            obj.surf = scale_by(obj.image, ZOOM)
+            screen.blit(obj.surf, (x, y))
+
+# this is a hack to allow rendering in the first frame
+follower.x -= 0.2
 # this is the main loop. the game happens in here
 while running:
+    needs_rerender = False;
     # event loop
     events = pygame.event.get()
     for event in events:
@@ -79,6 +92,7 @@ while running:
                                 add = "coins += "
                                 exec(add + lineData[0] + lineData[1])
                                 print(coins)
+                            needs_rerender = True;
                                 
                     print(lineData)
                     textbox.flush_text()
@@ -102,56 +116,57 @@ while running:
                     textbox.add_char(event.unicode)
 
 
-    # make the screen white
-    screen.fill((20,20,18))
 
 
     # smooth movement code
-    diff = player.x - follower.x
-    if diff != 0:
-        follower.x += diff/MOVEMENT
-    elif diff < 5:
+    diff_x = player.x - follower.x
+    if diff_x != 0:
+        follower.x += diff_x/MOVEMENT
+    elif diff_x < 5:
         follower.x = player.x
+        print(follower.x)
 
-    diff = player.y - follower.y
-    if diff != 0:
-        follower.y += diff/MOVEMENT
-    elif diff < 5:
+
+    diff_y = player.y - follower.y
+    if diff_y != 0:
+        follower.y += diff_y/MOVEMENT
+    elif diff_y < 5:
         follower.y = player.y
 
-    # draw map
-    for obj in sprite_group:
-        # TODO: if i can return a surf object better than this
-        # please let me know how
-        # there is a magic number somewhere, i can feel it
-        x = zoomify(obj.rect.x - follower.x)
-        y = zoomify(obj.rect.y - follower.y)
-        # check if the blocks are visible
-        if (x > -GRID_SIZE*ZOOM and x < textbox.x) and (y > -GRID_SIZE*ZOOM and y < HEIGHT):
-            obj.surf = scale_by(obj.image, ZOOM)
-            screen.blit(obj.surf, (x, y))
 
-    # draw the cupboard
-    screen.blit(scale_by(cupboard.image, ZOOM), (zoomify(cupboard.x - follower.x), zoomify(cupboard.y - follower.y)))
+    # draw stuff only if there is movement,
+    # this if statement will have to change once there are other sprites and such
+    if abs(diff_x) > CHANGE_THRESHOLD or abs(diff_y) > CHANGE_THRESHOLD:
+        # make the screen white
+        screen.fill(BG_GRAY)
+        draw_map()
 
-    # draw the follower (player)
-    # position is fixed because
-    screen.blit(scale_by(player.image, ZOOM), (WIDTH/3, HEIGHT/2))
+        # draw the cupboard
+        screen.blit(scale_by(cupboard.image, ZOOM), (zoomify(cupboard.x - follower.x), zoomify(cupboard.y - follower.y)))
 
-    # draw the terminal
-    pygame.draw.rect(screen, BLACK, textbox.rect)
-
-    # render the text
-    textbox.refresh_text()
-    screen.blit(textbox.text_surface, (textbox.fontx, textbox.fonty))
+        # draw the follower (player)
+        # position is fixed because the world moves around the player
+        screen.blit(scale_by(player.image, ZOOM), (WIDTH/3, HEIGHT/2))
 
     # draw coin counter
     img = pygame.image.load("./sprites/coin.png")
     img = pygame.transform.scale(img,(GRID_SIZE*5,GRID_SIZE*5))
+
     screen.blit(img,(0,0))
+
     font = pygame.font.SysFont('Comic Sans MS', GRID_SIZE*2)
     text = font.render(" x"+str(coins), False, (0, 0, 0))
     screen.blit(text,(GRID_SIZE*0.8,GRID_SIZE))
+    if textbox.active:
+        # if needs_rerender:
+        # draw the terminal
+        pygame.draw.rect(screen, BLACK, textbox.rect)
+
+        # render the text
+        textbox.refresh_text()
+        screen.blit(textbox.text_surface, (textbox.fontx, textbox.fonty))
+    else:
+        pygame.draw.rect(screen, TERM_GRAY, textbox.rect)
 
     # display contents
     pygame.display.flip()

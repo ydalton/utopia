@@ -66,6 +66,8 @@ HEIGHT = int(len(grid) * GRID_SIZE)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+BG_GRAY = (20,20,18)
+TERM_GRAY = (10,10,9)
 
 GAME_NAME = "Utopia"
 
@@ -73,8 +75,12 @@ GAME_NAME = "Utopia"
 command_history = [""]
 command_index = 0
 
+# zoom factor
 ZOOM = 4
+
+CHANGE_THRESHOLD = 0.1
 
 # zoom implementation
 def zoomify(_number):
+    # i guess 500 was magic, who knew
     return ZOOM*_number+500

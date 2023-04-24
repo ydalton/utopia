@@ -52,7 +52,7 @@ class TextBox:
         if len(self.text) > 0:
             self.text = self.text[:-1]
     def refresh_text(self):
-        self.text_surface = self.__font.render(">>> " + self.text, True, WHITE)
+        self.text_surface = self.__font.render(">>> " + self.text + "|", True, WHITE)
     def flush_text(self):
         if self.text != command_history[-1]:
             command_history.append(self.text)
