@@ -124,8 +124,8 @@ while running:
         # please let me know how
         obj.surf = pygame.transform.rotate(obj.image, 0)
         # there is a magic number somewhere, i can feel it
-        x = obj.rect.x + follower.x - WIDTH + 120
-        y = obj.rect.y + follower.y - 20
+        x = obj.rect.x - follower.x + 500
+        y = obj.rect.y - follower.y + 500
         # print(follower.x - 120, follower.y + 300)
         screen.blit(obj.surf, (x, y))
 
