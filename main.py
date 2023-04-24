@@ -122,12 +122,13 @@ while running:
     for obj in sprite_group:
         # TODO: if i can return a surf object better than this
         # please let me know how
-        obj.surf = pygame.transform.rotate(obj.image, 0)
         # there is a magic number somewhere, i can feel it
         x = obj.rect.x - follower.x + 500
         y = obj.rect.y - follower.y + 500
-        # print(follower.x - 120, follower.y + 300)
-        screen.blit(obj.surf, (x, y))
+        # limit the tiles being drawn
+        if (x > -GRID_SIZE and x < textbox.x) and (y > -GRID_SIZE and y < HEIGHT):
+            obj.surf = pygame.transform.rotate(obj.image, 0)
+            screen.blit(obj.surf, (x, y))
 
     # draw the cupboard
     screen.blit(cupboard.image, (cupboard.x, cupboard.y))
