@@ -77,7 +77,7 @@ command_history = [""]
 command_index = 0
 
 # zoom factor
-ZOOM = 4
+ZOOM = 3
 
 CHANGE_THRESHOLD = 0.1
 
