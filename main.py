@@ -27,7 +27,7 @@ for layer in tmx_data.layers:
 
 running = True
 # defining object
-chest = cupboard((25) * GRID_SIZE, (25) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/chest/chest_closed_t.png"))
+chest = cupboard((25) * GRID_SIZE, (25) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/Chest/chest_closed_t.png"))
 
 player = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
 follower = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
