@@ -14,29 +14,29 @@ pygame.init()
 pygame.display.set_caption(GAME_NAME)
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 clock = pygame.time.Clock()
-tmx_data = load_pygame('./tiles/maze.tmx')
-sprite_group = pygame.sprite.Group()
+tmx_data = load_pygame('./tiles/maze.tmx') # This stores the data from the level editor in a variable, You can print the dir to see all available options with the data.
+Tiles = pygame.sprite.Group()
 
 # draw each layer in the map
 for layer in tmx_data.layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
             pos =(x * GRID_SIZE,y * GRID_SIZE)
-            Tile(pos = pos, surf = surf, groups = sprite_group)
-    sprite_group.draw(screen)
+            Tile(pos = pos, surf = surf, groups = Tiles)
+    Tiles.draw(screen)
 
 running = True
 # defining object
-cupboard = Cupboard((47) * GRID_SIZE, (3) * GRID_SIZE, pygame.image.load("./tiles/cupboard_tile.png"))
+chest = cupboard((25) * GRID_SIZE, (25) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/chest/chest_closed_t.png"))
 
-player = Point((47) * GRID_SIZE, (5) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
-follower = Point((47) * GRID_SIZE, (5) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
+player = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
+follower = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
 
 textbox = TextBox()
 
 # this function cannot be moved outside of main.py
 def draw_map():
-    for obj in sprite_group:
+    for obj in Tiles:
         x = zoomify(obj.rect.x - follower.x)
         y = zoomify(obj.rect.y - follower.y)
         # check if the blocks are visible
@@ -92,7 +92,7 @@ while running:
                                 add = "coins += "
                                 exec(add + lineData[0] + lineData[1])
                                 print(coins)
-                            needs_rerender = True;
+                            needs_rerender = True
                                 
                     print(lineData)
                     textbox.flush_text()
@@ -137,13 +137,13 @@ while running:
     # draw stuff only if there is movement,
     # this if statement will have to change once there are other sprites and such
     if abs(diff_x) > CHANGE_THRESHOLD or abs(diff_y) > CHANGE_THRESHOLD:
-        # make the screen white
+        # Fill in the background
         screen.fill(BG_GRAY)
         draw_map()
 
-        # draw the cupboard
-        screen.blit(scale_by(cupboard.image, ZOOM), (zoomify(cupboard.x - follower.x), zoomify(cupboard.y - follower.y)))
-
+        # draw the Chest
+        screen.blit(scale_by(chest.top, ZOOM), (zoomify(chest.x - follower.x), zoomify((chest.y - follower.y)-1 * GRID_SIZE)))
+        screen.blit(scale_by(chest.image, ZOOM), (zoomify(chest.x - follower.x), zoomify(chest.y - follower.y)))
         # draw the follower (player)
         # position is fixed because the world moves around the player
         screen.blit(scale_by(player.image, ZOOM), (WIDTH/3, HEIGHT/2))

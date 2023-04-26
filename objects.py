@@ -16,16 +16,19 @@ class Point:
     def down(self):
         self.y += GRID_SIZE
     
-class Cupboard:
-    def __init__(self, x, y, image):
+class cupboard:
+    def __init__(self, x, y, image,top):
         self.x = x
         self.y = y
+        self.top = pygame.transform.scale(top,(GRID_SIZE, GRID_SIZE))
         self.image = pygame.transform.scale(image,(GRID_SIZE, GRID_SIZE))
         self.coins = 1
     def interact(self, player_y, player_x):
         if self.y == player_y and self.x == player_x:
-            image = pygame.image.load("./tiles/cupboard_open_tile.png")
+            top = pygame.image.load("./tiles/Chest/chest_open_t.png")
+            image = pygame.image.load("./tiles/Chest/chest_open_b.png")
             self.image = pygame.transform.scale(image,(GRID_SIZE, GRID_SIZE))
+            self.top = pygame.transform.scale(top,(GRID_SIZE, GRID_SIZE))
             add_coins = self.coins
             self.coins = 0
             return add_coins
@@ -63,3 +66,4 @@ class Tile(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.transform.scale(surf,(GRID_SIZE,GRID_SIZE))
         self.rect = self.image.get_rect(topleft = pos)
+# The Sprite class Tile is used to draw the image attached to a certain position(pos) and scale it to the grid size.
