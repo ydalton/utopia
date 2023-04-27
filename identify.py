@@ -19,7 +19,7 @@ def identify(_inputLine):
         _object += letter
 
     #valid object error check
-    if _object not in ["player", "cupboard"]:
+    if _object not in ["player", "chest"]:
         _error = True
         print("error 1")
 
@@ -59,7 +59,7 @@ def identify(_inputLine):
         print("error 5")
 
     #checking if interact command is used with correct objects
-    if _do == ".interact(player.y, player.x)" and _object not in ["cupboard"]:
+    if _do == ".interact(player.y, player.x)" and _object not in ["chest"]:
         _error = True
         print("error 6")
 

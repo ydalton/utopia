@@ -16,7 +16,7 @@ class Point:
     def down(self):
         self.y += GRID_SIZE
     
-class cupboard:
+class Cupboard:
     def __init__(self, x, y, image,top):
         self.x = x
         self.y = y

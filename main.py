@@ -27,7 +27,7 @@ for layer in tmx_data.layers:
 
 running = True
 # defining object
-chest = cupboard((25) * GRID_SIZE, (25) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/Chest/chest_closed_t.png"))
+chest = Cupboard((25) * GRID_SIZE, (25) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/Chest/chest_closed_t.png"))
 
 player = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
 follower = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
@@ -48,7 +48,7 @@ def draw_map():
 follower.x -= 0.2
 # this is the main loop. the game happens in here
 while running:
-    needs_rerender = False;
+    needs_rerender = False
     # event loop
     events = pygame.event.get()
     for event in events:
@@ -136,17 +136,17 @@ while running:
 
     # draw stuff only if there is movement,
     # this if statement will have to change once there are other sprites and such
-    if abs(diff_x) > CHANGE_THRESHOLD or abs(diff_y) > CHANGE_THRESHOLD:
-        # Fill in the background
-        screen.fill(BG_GRAY)
-        draw_map()
+    #if abs(diff_x) > CHANGE_THRESHOLD or abs(diff_y) > CHANGE_THRESHOLD:
+    # Fill in the background
+    screen.fill(BG_GRAY)
+    draw_map()
 
-        # draw the Chest
-        screen.blit(scale_by(chest.top, ZOOM), (zoomify(chest.x - follower.x), zoomify((chest.y - follower.y)-1 * GRID_SIZE)))
-        screen.blit(scale_by(chest.image, ZOOM), (zoomify(chest.x - follower.x), zoomify(chest.y - follower.y)))
-        # draw the follower (player)
-        # position is fixed because the world moves around the player
-        screen.blit(scale_by(player.image, ZOOM), (WIDTH/3, HEIGHT/2))
+    # draw the Chest
+    screen.blit(scale_by(chest.top, ZOOM), (zoomify(chest.x - follower.x), zoomify((chest.y - follower.y)-1 * GRID_SIZE)))
+    screen.blit(scale_by(chest.image, ZOOM), (zoomify(chest.x - follower.x), zoomify(chest.y - follower.y)))
+    # draw the follower (player)
+    # position is fixed because the world moves around the player
+    screen.blit(scale_by(player.image, ZOOM), (WIDTH/3, HEIGHT/2))
 
     # draw coin counter
     img = pygame.image.load("./sprites/coin.png")
