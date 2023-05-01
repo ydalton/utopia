@@ -26,8 +26,19 @@ for layer in tmx_data.layers:
     Tiles.draw(screen)
 
 running = True
+
+#chest positions
+chests_pos = [
+    [25,25],
+    [25,27],
+    [27,27]
+]
 # defining object
-chest = Cupboard((25) * GRID_SIZE, (25) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/Chest/chest_closed_t.png"))
+door = Door((25) * GRID_SIZE,(23) * GRID_SIZE)
+
+chests = []
+for x,y in chests_pos:
+    chests.append(Chest((x) * GRID_SIZE, (y) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/Chest/chest_closed_t.png")))
 
 player = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
 follower = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
@@ -89,16 +100,23 @@ while running:
                             elif lineData[1] == ".down()" and grid[p_idx_y + 1][p_idx_x] != 0:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".interact(player.y, player.x)":
-                                add = "coins += "
-                                exec(add + lineData[0] + lineData[1])
-                                print(coins)
+                                if lineData[0] == "chest": #adding coins only from chests
+                                    add = "coins += "
+                                    for i,pos in enumerate(chests_pos):
+                                        if pos[0] == p_idx_x and pos[1] == p_idx_y:
+                                            lineData[0] = lineData[0] + "s[" + str(i) + "]"
+                                            exec(add + lineData[0] + lineData[1])
+                                            print(coins)
+                                            break
+                                    print("error 7 (there is no chest or door at your current position)")
+                                elif lineData[0] == "door": #for ending the game (exiting level)
+                                    eval(lineData[0] + lineData[1])
+                                else:
+                                    print("error ? (should not ever happen)")
                             needs_rerender = True
                                 
                     print(lineData)
                     textbox.flush_text()
-                    # because python is autistic for some reason,
-                    # we can't include this line in the flust_text
-                    # function
                     command_index = 0
 
                 elif event.key in [K_UP, K_DOWN]:
@@ -141,9 +159,11 @@ while running:
     screen.fill(BG_GRAY)
     draw_map()
 
-    # draw the Chest
-    screen.blit(scale_by(chest.top, ZOOM), (zoomify(chest.x - follower.x), zoomify((chest.y - follower.y)-1 * GRID_SIZE)))
-    screen.blit(scale_by(chest.image, ZOOM), (zoomify(chest.x - follower.x), zoomify(chest.y - follower.y)))
+    # draw the Chests
+    for num in range(0,3):
+        screen.blit(scale_by(chests[num].top, ZOOM), (zoomify(chests[num].x - follower.x), zoomify((chests[num].y - follower.y)-1 * GRID_SIZE)))
+        screen.blit(scale_by(chests[num].image, ZOOM), (zoomify(chests[num].x - follower.x), zoomify(chests[num].y - follower.y)))
+
     # draw the follower (player)
     # position is fixed because the world moves around the player
     screen.blit(scale_by(player.image, ZOOM), (WIDTH/3, HEIGHT/2))
