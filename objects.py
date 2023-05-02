@@ -16,7 +16,7 @@ class Point:
     def down(self):
         self.y += GRID_SIZE
     
-class Cupboard:
+class Chest:
     def __init__(self, x, y, image,top):
         self.x = x
         self.y = y
@@ -33,6 +33,14 @@ class Cupboard:
             self.coins = 0
             return add_coins
 
+class Door:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def interact(self, player_y, player_x):
+        if self.y == player_y and self.x == player_x:
+            #end the game
+            print("End")
 
 class TextBox:
     def __init__(self):

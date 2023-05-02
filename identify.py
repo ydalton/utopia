@@ -19,9 +19,9 @@ def identify(_inputLine):
         _object += letter
 
     #valid object error check
-    if _object not in ["player", "chest"]:
+    if _object not in ["player", "chest", "door"]:
         _error = True
-        print("error 1")
+        print("error 1 (unreachable object)")
 
     try:    #handles the error of command not having ()
         _inputCommand = _inputLine[len(_object)+1:_inputLine.index("(")]    #extracting inputerd command by getting string from the end of object till start of brackets
@@ -34,7 +34,7 @@ def identify(_inputLine):
             if (_inputCommand in ("moveY","moveX")):
                 if _repeat == "":
                     _error = True   #movement orientation error
-                    print("error 2")
+                    print("error 2 (move for no distance)")
                 elif int(_repeat) < 0:
                     _do = _commands[_inputCommand][1]
                 elif int(_repeat) > 0:
@@ -47,20 +47,20 @@ def identify(_inputLine):
 
         else:
             _error = True
-            print("error 3")
+            print("error 3 (command does not exist)")
 
     except:
         _error = True
-        print("error 4")
+        print("error 4 (no brackets)")
 
     #checking if moveX/Y commands are used with correct objects
     if _do in ("moveY","moveX") and _object not in ["player"]:
         _error = True
-        print("error 5")
+        print("error 5 (move a non-moveable object)")
 
     #checking if interact command is used with correct objects
-    if _do == ".interact(player.y, player.x)" and _object not in ["chest"]:
+    if _do == ".interact(player.y, player.x)" and _object not in ["chest", "door"]:
         _error = True
-        print("error 6")
+        print("error 6 (interact with non-interact object)")
 
-    return (_object, _do, _repeat, _error)
+    return [_object, _do, _repeat, _error]
