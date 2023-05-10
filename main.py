@@ -4,6 +4,7 @@ from pygame.transform import *
 from identify import identify
 from constants import *
 from objects import *
+from menus import *
 from pygame.locals import (
     K_UP,
     K_DOWN
@@ -25,8 +26,6 @@ for layer in tmx_data.layers:
             Tile(pos = pos, surf = surf, groups = Tiles)
     Tiles.draw(screen)
 
-running = True
-
 #chest positions
 chests_pos = [
     [25,25],
@@ -38,12 +37,17 @@ door = Door((25) * GRID_SIZE,(23) * GRID_SIZE)
 
 chests = []
 for x,y in chests_pos:
-    chests.append(Chest((x) * GRID_SIZE, (y) * GRID_SIZE, pygame.image.load("./tiles/Chest/chest_closed_b.png"), pygame.image.load("./tiles/Chest/chest_closed_t.png")))
+    chests.append(Chest((x) * GRID_SIZE, (y) * GRID_SIZE, pygame.image.load("./tiles/chests/chest_closed_b.png"), pygame.image.load("./tiles/chests/chest_closed_t.png")))
 
 player = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
 follower = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
 
 textbox = TextBox()
+
+#buttons
+img = pygame.image.load("./sprites/i_menu.png")
+img = pygame.transform.scale(img,(GRID_SIZE*5, GRID_SIZE*5))
+infoButton = Button(WIDTH, HEIGHT, img, ((GRID_SIZE*5)+5, 0))
 
 # this function cannot be moved outside of main.py
 def draw_map():
@@ -55,8 +59,13 @@ def draw_map():
             obj.surf = scale_by(obj.image, ZOOM)
             screen.blit(obj.surf, (x, y))
 
+
 # this is a hack to allow rendering in the first frame
 follower.x -= 0.2
+
+running = True
+running = startMenu(screen)
+
 # this is the main loop. the game happens in here
 while running:
     needs_rerender = False
@@ -66,13 +75,19 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # TODO: this might be removed later
+        #pause menu activation
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            running = infoButton.on_click(screen,event)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = infoButton.on_click(screen,event)
+
+        # terminal activation
         if event.type == pygame.MOUSEBUTTONDOWN:
             if textbox.rect.collidepoint(event.pos):
                 textbox.active = not textbox.active
             else:
                 textbox.active = False
-
         if event.type == pygame.KEYDOWN:
             if textbox.active:
                 if event.key == pygame.K_BACKSPACE:
@@ -111,6 +126,7 @@ while running:
                                     print("error 7 (there is no chest or door at your current position)")
                                 elif lineData[0] == "door": #for ending the game (exiting level)
                                     eval(lineData[0] + lineData[1])
+                                    running = endMenu(screen,coins)
                                 else:
                                     print("error ? (should not ever happen)")
                             needs_rerender = True
@@ -133,9 +149,6 @@ while running:
                 else:
                     textbox.add_char(event.unicode)
 
-
-
-
     # smooth movement code
     diff_x = player.x - follower.x
     if diff_x != 0:
@@ -144,13 +157,11 @@ while running:
         follower.x = player.x
         print(follower.x)
 
-
     diff_y = player.y - follower.y
     if diff_y != 0:
         follower.y += diff_y/MOVEMENT
     elif diff_y < 5:
         follower.y = player.y
-
 
     # draw stuff only if there is movement,
     # this if statement will have to change once there are other sprites and such
@@ -177,6 +188,10 @@ while running:
     font = pygame.font.SysFont('Comic Sans MS', GRID_SIZE*2)
     text = font.render(" x"+str(coins), False, (0, 0, 0))
     screen.blit(text,(GRID_SIZE*0.8,GRID_SIZE))
+
+    # draw pause button
+    screen.blit(infoButton.image, infoButton.rect)
+
     if textbox.active:
         # if needs_rerender:
         # draw the terminal
