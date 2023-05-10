@@ -1,8 +1,24 @@
 #+title: Utopia - Dungeon Adventure
 
-Utopia is our game that we have written for Professional Skills 1
+Utopia is our game that we have written for Professional Skills 1.
 
+* Installation
+
+This game has two dependencies:
+
+- ~pygame~
+- ~pytmx~
+
+Install these with ~pip~.
+
+* Usage
 To run it:
 #+begin_src sh
 python main.py
 #+end_src
+* Credits
+Meet our team:
+- [[https://github.com/RobVerbeek][Rob Verbeek]]
+- [[https://github.com/ydalton][Yussef Dalton]]
+- [[https://github.com/MatejBursik][Matej Bursik]]
+- [[https://github.com/markasame][Mark Vaykul]]
