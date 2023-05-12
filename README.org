@@ -4,10 +4,11 @@ Utopia is our game that we have written for Professional Skills 1.
 
 * Installation
 
-This game has two dependencies:
+Game dependencies:
 
 - ~pygame~
 - ~pytmx~
+- ~asyncio~
 
 Install these with ~pip~.
 
@@ -16,6 +17,12 @@ To run it:
 #+begin_src sh
 python main.py
 #+end_src
+
+OR
+
+To run the game without downloading the code you can play it on our website:
+- [[link][Game website]]
+
 * Credits
 Meet our team:
 - [[https://github.com/RobVerbeek][Rob Verbeek]]
