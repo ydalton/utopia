@@ -19,8 +19,6 @@ clock = pygame.time.Clock()
 tmx_data = load_pygame('./tiles/maze.tmx') # This stores the data from the level editor in a variable, You can print the dir to see all available options with the data.
 Tiles = pygame.sprite.Group()
 
-floor = tmx_data.get_layer_by_name("floor")
-print(floor.data)
 # draw each layer in the map
 for layer in tmx_data.layers:
     if hasattr(layer,'data'):
