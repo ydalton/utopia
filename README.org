@@ -41,11 +41,12 @@ by typing commands in a terminal on the right hand side. A few sample commands:
 - ~door.interact()~: if the player is hovering over the exit, this command opens
   the door and ends the level.
 ** What to look for:
-Chests look like this:
+Chests look like this:\\
 [[./tiles/chests/chest_closed_b.png]]
-
-The exit look like this:
+\\
+The exit look like this:\\
 [[./door.png]]
+\\
 
 
 * Credits
