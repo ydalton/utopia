@@ -10,7 +10,6 @@ from pygame.locals import (
     K_DOWN
 )
 from pytmx.util_pygame import load_pygame
-import asyncio
 
 pygame.init()
 pygame.display.set_caption(GAME_NAME)
@@ -56,7 +55,7 @@ follower = Point((2) * GRID_SIZE, (15) * GRID_SIZE, 20, pygame.image.load("./spr
 
 textbox = TextBox()
 
-#buttons
+#info button
 img = pygame.image.load("./sprites/i_menu.png")
 img = pygame.transform.scale(img,(GRID_SIZE*5, GRID_SIZE*5))
 infoButton = Button(WIDTH, HEIGHT, img, ((GRID_SIZE*5)+5, 0))
@@ -74,6 +73,7 @@ def draw_map():
 # this is a hack to allow rendering in the first frame
 follower.x -= 0.2
 
+#start menu and main loop boolean (running)
 running = True
 running = startMenu(screen)
 
@@ -99,22 +99,22 @@ while running:
                 textbox.active = not textbox.active
             else:
                 textbox.active = False
+
+        #inside interaction with the termianl
         if event.type == pygame.KEYDOWN:
             if textbox.active:
                 if event.key == pygame.K_BACKSPACE:
                     textbox.del_char()
                 elif event.key == pygame.K_RETURN:
-                    inLine = textbox.text   #point.moveX(-3)
-                    lineData = identify(inLine)
-                    if lineData[3] == False:
+                    inLine = textbox.text
+                    lineData = identify(inLine) #input parser
+                    if lineData[3] == False: #parser error control
                         for rep in range(abs(int(lineData[2]))):
                             print(f"Point: {player.x} {player.y}\tFollower: {follower.x} {follower.y}")
 
                             p_idx_x = int(player.x / GRID_SIZE)
                             p_idx_y = int(player.y / GRID_SIZE)
 
-                            # FIXME: your player might refuse to move if there is a block
-                            # in front of the block that you want to move to.
                             if lineData[1] not in [".left()",".right()",".up()",".down()",".interact(player.y, player.x)"]:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".left()" and grid[p_idx_y][p_idx_x - 1] != 0:
@@ -126,7 +126,8 @@ while running:
                             elif lineData[1] == ".down()" and grid[p_idx_y + 1][p_idx_x] != 0:
                                 eval(lineData[0] + lineData[1])
                             elif lineData[1] == ".interact(player.y, player.x)":
-                                if lineData[0] == "chest": #adding coins only from chests
+                                #adding coins only from chests
+                                if lineData[0] == "chest":
                                     add = "coins += "
                                     for i,pos in enumerate(chests_pos):
                                         if pos[0] == p_idx_x and pos[1] == p_idx_y:
@@ -136,7 +137,8 @@ while running:
                                             break
                                     print("error 7 (there is no chest or door at your current position)")
 
-                                elif lineData[0] == "door": #for ending the game (exiting level)
+                                #for ending the game (exiting level)
+                                elif lineData[0] == "door":
                                     for i,pos in enumerate(doors_pos):
                                         if pos[0] == p_idx_x and pos[1] == p_idx_y:
                                             lineData[0] = lineData[0] + "s[" + str(i) + "]"
@@ -147,12 +149,13 @@ while running:
                                     print("error ? (should not ever happen)")
                             needs_rerender = True
 
+                    #clear the line after command is executed
                     print(lineData)
                     textbox.flush_text()
                     command_index = 0
 
-                elif event.key in [K_UP, K_DOWN]:
-                    # implements going back in command history
+                # implements going back in command history
+                elif event.key in [K_UP, K_DOWN] and len(command_history) > 0:
                     if event.key == K_UP and command_index >= -len(command_history) + 1:
                         command_index -= 1
                     if event.key == K_DOWN and command_index <= -1:
@@ -165,7 +168,7 @@ while running:
                 else:
                     textbox.add_char(event.unicode)
 
-    # smooth movement code
+    # enabling smooth movement between steps
     diff_x = player.x - follower.x
     if diff_x != 0:
         follower.x += diff_x/MOVEMENT
@@ -179,9 +182,7 @@ while running:
     elif diff_y < 5:
         follower.y = player.y
 
-    # draw stuff only if there is movement,
-    # this if statement will have to change once there are other sprites and such
-    #if abs(diff_x) > CHANGE_THRESHOLD or abs(diff_y) > CHANGE_THRESHOLD:
+
     # Fill in the background
     screen.fill(BG_GRAY)
     draw_map()
@@ -198,7 +199,6 @@ while running:
     # draw coin counter
     img = pygame.image.load("./sprites/coin.png")
     img = pygame.transform.scale(img,(GRID_SIZE*5,GRID_SIZE*5))
-
     screen.blit(img,(0,0))
 
     font = pygame.font.SysFont('Comic Sans MS', GRID_SIZE*2)
@@ -208,9 +208,8 @@ while running:
     # draw pause button
     screen.blit(infoButton.image, infoButton.rect)
 
+    # draw the terminal
     if textbox.active:
-        # if needs_rerender:
-        # draw the terminal
         pygame.draw.rect(screen, BLACK, textbox.rect)
 
         # render the text
@@ -220,6 +219,6 @@ while running:
         pygame.draw.rect(screen, TERM_GRAY, textbox.rect)
 
     # display contents
-    pygame.display.flip()
+    pygame.display.update()
     clock.tick(60)
 pygame.quit()
