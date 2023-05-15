@@ -19,6 +19,8 @@ clock = pygame.time.Clock()
 tmx_data = load_pygame('./tiles/maze.tmx') # This stores the data from the level editor in a variable, You can print the dir to see all available options with the data.
 Tiles = pygame.sprite.Group()
 
+floor = tmx_data.get_layer_by_name("floor")
+print(floor.data)
 # draw each layer in the map
 for layer in tmx_data.layers:
     if hasattr(layer,'data'):
@@ -29,19 +31,19 @@ for layer in tmx_data.layers:
 
 #chest positions
 chests_pos = [
-    [25,25],
-    [25,27],
-    [27,27]
+    [29,17],
+    [46,12],
+    [35,33]
 ]
 # defining object
-door = Door((25) * GRID_SIZE,(23) * GRID_SIZE)
+door = Door((43) * GRID_SIZE,(44) * GRID_SIZE)
 
 chests = []
 for x,y in chests_pos:
     chests.append(Chest((x) * GRID_SIZE, (y) * GRID_SIZE, pygame.image.load("./tiles/chests/chest_closed_b.png"), pygame.image.load("./tiles/chests/chest_closed_t.png")))
 
-player = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
-follower = Point((25) * GRID_SIZE, (25) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
+player = Point((2) * GRID_SIZE, (15) * GRID_SIZE, 1, pygame.image.load("./sprites/hero.png"))
+follower = Point((2) * GRID_SIZE, (15) * GRID_SIZE, 20, pygame.image.load("./sprites/hero.png"))
 
 textbox = TextBox()
 
