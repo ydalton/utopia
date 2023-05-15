@@ -1,6 +1,7 @@
 import pygame
 from constants import *
 
+#start of the game loop
 def startMenu(screen):
     state = True
     clock = pygame.time.Clock()
@@ -20,9 +21,10 @@ def startMenu(screen):
         pygame.draw.rect(screen, (255, 255, 255), button, 1)
         background = pygame.transform.scale(pygame.image.load("./sprites/start_background.png"),(WIDTH, HEIGHT))
         screen.blit(background,(0, 0))
-        pygame.display.flip()
+        pygame.display.update()
         clock.tick(60)
 
+#end of the game loop
 def endMenu(screen, endCoins):
     menu = pygame.Surface((WIDTH, HEIGHT))
     cnt = 1
@@ -43,6 +45,7 @@ def endMenu(screen, endCoins):
 
         if cnt == 1:
             menu.fill('grey')
+            #writing final text
             font = pygame.font.SysFont('Comic Sans MS', GRID_SIZE*2)
             text = font.render("You collected x" + str(endCoins) + " coins", False, (0, 0, 0))
             text_rect = text.get_rect(center=(WIDTH/2, HEIGHT/2))
@@ -53,6 +56,7 @@ def endMenu(screen, endCoins):
             text_rect = text.get_rect(center=(WIDTH/2, (HEIGHT/2)+(GRID_SIZE*3)))
             menu.blit(text, text_rect)
             
+            #fade in
             for j in range(0, 255):
                 menu.set_alpha(j)
                 screen.blit(menu, (0, 0))

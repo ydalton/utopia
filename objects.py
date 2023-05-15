@@ -2,6 +2,7 @@ import pygame
 from constants import *
 from menus import *
 
+#player class (also for the follower)
 class Point:
     def __init__(self, x, y, size, image):
         self.x = x
@@ -41,6 +42,7 @@ class Chest:
             self.coins = 0
             return add_coins
 
+#exiting door class
 class Door:
     def __init__(self, x, y):
         self.x = x
@@ -50,6 +52,7 @@ class Door:
             #end the game
             print("End")
 
+#terminal class
 class TextBox:
     def __init__(self):
         self.x = WIDTH//1.5
@@ -84,6 +87,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(surf,(GRID_SIZE,GRID_SIZE))
         self.rect = self.image.get_rect(topleft = pos)
 
+#info button class
 class Button:
     def __init__(self, height, width, image, position):
         self.height = height
@@ -91,6 +95,7 @@ class Button:
         self.image = image
         self.rect = image.get_rect(topleft=position)
         self.menu = pygame.Surface((self.width, self.height))
+    #button game loop
     def pMenu(self,screen):
         state = True
         cnt = 1
@@ -107,6 +112,7 @@ class Button:
                         state = False
                         return True
             if cnt == 1:
+                #fade in
                 self.menu.fill((0, 0, 0))
                 for j in range(0, 20):
                     self.menu.set_alpha(j)
@@ -119,7 +125,7 @@ class Button:
                 info = pygame.transform.scale(pygame.image.load("./sprites/info_menu.png"),(int(self.height/2),int(self.width/2)))
                 screen.blit(info, (int(self.height/4),int(self.width/4)))
                 pygame.display.update()
-
+    #button interaction
     def on_click(self, screen, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
