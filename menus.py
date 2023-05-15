@@ -4,11 +4,9 @@ from constants import *
 def startMenu(screen):
     state = True
     clock = pygame.time.Clock()
-    button = pygame.Rect(WIDTH / 2.6, HEIGHT / 1.5, WIDTH / 2.6, HEIGHT / 6)
+    button = pygame.Rect(WIDTH / 2.6, HEIGHT / 1.6, WIDTH / 2.6, HEIGHT / 4)
 
     while state:
-        background = pygame.transform.scale(pygame.image.load("./tiles/start_background.png"),(WIDTH, HEIGHT))
-        screen.blit(background,(0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
@@ -20,8 +18,8 @@ def startMenu(screen):
                     return True
                 
         pygame.draw.rect(screen, (255, 255, 255), button, 1)
-        img = pygame.transform.scale(pygame.image.load("./sprites/start.png"),(WIDTH / 2.6, HEIGHT / 6))
-        screen.blit(img,(WIDTH / 2.6, HEIGHT / 1.5))
+        background = pygame.transform.scale(pygame.image.load("./sprites/start_background.png"),(WIDTH, HEIGHT))
+        screen.blit(background,(0, 0))
         pygame.display.flip()
         clock.tick(60)
 
