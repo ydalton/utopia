@@ -29,7 +29,7 @@ python main.py
 OR
 
 To run the game without downloading the code you can play it on our website:
-- [[link][Game website]]
+- [[/dev/null][Game website]]
 * Playing the game
 ** Basics
 The game is a text based game. You move and interact with objects
@@ -42,11 +42,9 @@ by typing commands in a terminal on the right hand side. A few sample commands:
   the door and ends the level.
 ** What to look for:
 Chests look like this:\\
-[[./tiles/chests/chest_closed_b.png]]
-\\
+[[./tiles/chests/chest_closed_b.png]]\\
 The exit look like this:\\
 [[./door.png]]
-\\
 
 
 * Credits
