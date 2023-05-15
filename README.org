@@ -31,24 +31,20 @@ OR
 To run the game without downloading the code you can play it on our website:
 - [[link][Game website]]
 * Playing the game
-** Basics
 The game is a text based game. You move and interact with objects
 by typing commands in a terminal on the right hand side. A few sample commands:
 - ~player.moveX(3)~: moves the player right by 3 blocks.
 - ~player.moveY(-1)~: moves the player down by 1 block.
 - ~chest.interact()~: if the player is exactly on top of a chest, this command opens
   the chest and takes the coins inside the chest.
-  ~door.interact()~: if the player is hovering over the exit, this command opens
+- ~door.interact()~: if the player is hovering over the exit, this command opens
   the door and ends the level.
-** What to look for
-Chests look like this:
-#+CAPTION: Example of a chest
-#+ATTR_HTML: :width 150px
-[[./tiles/chests/chest_closed_b.png]]
-The exit look like this:
-#+CAPTION: Example of the exit
-#+ATTR_HTML: :width 150px
-[[./door.png]]
+What to look for:
+- Chests look like this:
+  #+ATTR_HTML: :style width: 200px;
+  [[./tiles/chests/chest_closed_b.png]]
+- The exit look like this:
+  [[./door.png]]
 
 
 * Credits
