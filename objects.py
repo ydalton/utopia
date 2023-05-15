@@ -109,7 +109,7 @@ class Button:
                 cnt = 0
 
                 #info block
-                info = pygame.transform.scale(pygame.image.load("./sprites/info.png"),(int(self.height/2),int(self.width/2)))
+                info = pygame.transform.scale(pygame.image.load("./sprites/info_menu.png"),(int(self.height/2),int(self.width/2)))
                 screen.blit(info, (int(self.height/4),int(self.width/4)))
                 pygame.display.update()
 

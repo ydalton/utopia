@@ -33,8 +33,19 @@ chests_pos = [
     [46,12],
     [35,33]
 ]
+
+#door position because the escape is 4 blocks wide
+doors_pos = [
+    [43,44],
+    [44,44],
+    [43,45],
+    [44,45]
+]
+
 # defining object
-door = Door((43) * GRID_SIZE,(44) * GRID_SIZE)
+doors = []
+for x,y in chests_pos:
+    doors.append(Door((x) * GRID_SIZE,(y) * GRID_SIZE))
 
 chests = []
 for x,y in chests_pos:
@@ -124,9 +135,14 @@ while running:
                                             print(coins)
                                             break
                                     print("error 7 (there is no chest or door at your current position)")
+
                                 elif lineData[0] == "door": #for ending the game (exiting level)
-                                    eval(lineData[0] + lineData[1])
-                                    running = endMenu(screen,coins)
+                                    for i,pos in enumerate(doors_pos):
+                                        if pos[0] == p_idx_x and pos[1] == p_idx_y:
+                                            lineData[0] = lineData[0] + "s[" + str(i) + "]"
+                                            eval(lineData[0] + lineData[1])
+                                            running = endMenu(screen,coins)
+                                    
                                 else:
                                     print("error ? (should not ever happen)")
                             needs_rerender = True
