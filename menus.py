@@ -19,7 +19,7 @@ def startMenu(screen):
                 if event.key == pygame.K_RETURN:
                     return True
                 
-        pygame.draw.rect(screen, (255, 255, 255), button)
+        pygame.draw.rect(screen, (255, 255, 255), button, 1)
         img = pygame.transform.scale(pygame.image.load("./sprites/start.png"),(WIDTH / 2.6, HEIGHT / 6))
         screen.blit(img,(WIDTH / 2.6, HEIGHT / 1.5))
         pygame.display.flip()
