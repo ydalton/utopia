@@ -8,9 +8,16 @@ class Point:
         self.y = y
         self.size = size
         self.image = pygame.transform.scale(image,(GRID_SIZE, GRID_SIZE))
+        self.facing = "right"
     def left(self):
+        if self.facing == "right":
+            self.facing = "left"
+            self.image = pygame.transform.flip(self.image, True, False)
         self.x -= GRID_SIZE
     def right(self):
+        if self.facing == "left":
+            self.facing = "right"
+            self.image = pygame.transform.flip(self.image, True, False)
         self.x += GRID_SIZE
     def up(self):
         self.y -= GRID_SIZE
