@@ -12,7 +12,7 @@ Game dependencies:
 
 Install these with ~pip~:
 #+BEGIN_SRC shell
-pip install pygame pytmx asyncio
+pip install pygame pytmx
 #+END_SRC
 
 To run this game, you must have ~python~ and ~pip~ installed on your system.
