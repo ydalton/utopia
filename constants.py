@@ -53,4 +53,4 @@ CHANGE_THRESHOLD = 0.1
 # zoom implementation
 def zoomify(_number):
     # i guess 500 was magic, who knew
-    return ZOOM*_number+500
+    return ZOOM*_number+(25*GRID_SIZE)
