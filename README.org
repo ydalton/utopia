@@ -18,10 +18,10 @@ pip install pygame pytmx
 To run this game, you must have ~python~ and ~pip~ installed on your system.
 
 * Usage
-Open the foulder where it is downloaded
-Click on the path bar
-Write cmd and press enter
-To run the game execute this terminal:
+1. Open the folder where it is downloaded
+2. Click on the path bar
+3. Write cmd and press enter
+4. To run the game execute this terminal:
 #+BEGIN_SRC shell
 python main.py
 #+END_SRC
@@ -35,7 +35,7 @@ by typing commands in a terminal on the right hand side. A few sample commands:
   the chest and takes the coins inside the chest.
 - ~door.interact()~: if the player is hovering over the exit, this command opens
   the door and ends the level.
-  
+
 ** What to look for:
 - Chests look like this:
 [[./tiles/chestexample.png]]
